@@ -10,12 +10,17 @@ import re
 # Patterns
 headings_pattern = r'^#{1,6}\s*'
 unordered_pattern = r'^-\s*'
+ordered_pattern = r'^\*\s*'
 
-lines = []
 
 
 def main():
     args = sys.argv
+
+    lines = []
+    is_ul = False
+    is_ol = False
+
 
     if len(args) < 3:
         print('Usage: ./markdown2html.py README.md README.html',
@@ -24,6 +29,8 @@ def main():
 
     markdown_path = args[1]
     html_path = args[2]
+
+
 
     if not path.exists(markdown_path):
         print(f"Missing {markdown_path}", file=sys.stderr)
@@ -38,12 +45,38 @@ def main():
 
             # Markdown Unordered List
             if re.match(unordered_pattern, line):
-                lines.append(handle_unordered_list(line.strip()))
+                line = re.sub(unordered_pattern, '', line.strip())
+                if not is_ul:
+                    is_ul = True
+                    lines.append('<ul>\n')
+
+                lines.append(f'<li>{line}</li>\n')
                 continue
 
-            close_unordered_list()
+            # Markdown Ordered List
+            if re.match(ordered_pattern, line):
+                line = re.sub(ordered_pattern, '', line.strip())
+                if not is_ol:
+                    is_ol = True
+                    lines.append('<ol>\n')
 
-        close_unordered_list()
+                lines.append(f'<li>{line}</li>\n')
+                continue
+
+            if  is_ul: 
+                lines.append('</ul>\n')
+                is_ul = False
+            if  is_ol: 
+                lines.append('</ol>\n')
+                is_ol = False
+
+        if  is_ul: 
+            lines.append('</ul>\n')
+            is_ul = False
+        if  is_ol: 
+            lines.append('</ol>\n')
+            is_ol = False
+
 
     with open(html_path, mode='w') as html:
         html.writelines(lines)
@@ -82,36 +115,6 @@ def handle_heading(line):
         return f'<h6>{line}</h6>\n'
 
     return line
-
-
-def handle_unordered_list(line):
-    '''
-    Parsing Unordered listing syntax for generating HTML
-    '''
-    line = re.sub(unordered_pattern, '', line)
-    
-    open_unordered_list()
-
-    return f'<li>{line}</li>\n'
-
-
-def open_unordered_list():
-    if len(lines) == 0:
-        lines.append('<ul>\n')
-        return
-
-    last_tag = lines[-1]
-    if not last_tag.startswith('<ul>') and not last_tag.startswith('<li>'):
-        lines.append('<ul>\n')
-
-
-def close_unordered_list():
-    if len(lines) == 0: 
-        return
-
-    last_tag = lines[-1]
-    if last_tag.startswith('<ul>') or last_tag.startswith('<li>'):
-        lines.append('</ul>\n')
 
 
 if __name__ == '__main__':
