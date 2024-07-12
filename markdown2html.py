@@ -9,6 +9,9 @@ import re
 
 # Patterns
 headings_pattern = r'^#{1,6}\s*'
+unordered_pattern = r'^-\s*'
+
+lines = []
 
 
 def main():
@@ -26,11 +29,23 @@ def main():
         print(f"Missing {markdown_path}", file=sys.stderr)
         sys.exit(1)
 
-    lines = []
     with open(markdown_path, mode='r') as markdown:
         for line in markdown:
+            # Markdown Headings
             if re.match(headings_pattern, line):
                 lines.append(handle_heading(line.strip()))
+                continue
+
+            # Markdown Unordered List
+            if re.match(unordered_pattern, line):
+                lines.append(handle_unordered_list(line.strip()))
+                continue
+
+            if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
+                lines.append('</ul>\n')
+
+        if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
+            lines.append('</ul>\n')
 
     with open(html_path, mode='w') as html:
         html.writelines(lines)
@@ -69,6 +84,20 @@ def handle_heading(line):
         return f'<h6>{line}</h6>\n'
 
     return line
+
+
+def handle_unordered_list(line):
+    '''
+    Parsing Unordered listing syntax for generating HTML
+    '''
+    line = re.sub(unordered_pattern, '', line)
+    # If this the first list item, create ul tag
+    last_tag = lines[-1]
+
+    if not last_tag.startswith('<ul>') and not last_tag.startswith('<li>'):
+        lines.append('<ul>\n')
+
+    return f'<li>{line}</li>\n'
 
 
 if __name__ == '__main__':
