@@ -11,6 +11,8 @@ import re
 headings_pattern = r'^#{1,6}\s*'
 unordered_pattern = r'^-\s*'
 ordered_pattern = r'^\*\s*'
+bold_pattern = r'\*\*(.*?)\*\*'
+italic_pattern = r'__(.*?)__'
 
 
 def main():
@@ -47,7 +49,7 @@ def main():
                     is_ul = True
                     lines.append('<ul>\n')
 
-                lines.append(f'<li>{line}</li>\n')
+                lines.append(f'<li>{handle_bold_italic(line)}</li>\n')
                 continue
 
             # Markdown Ordered List
@@ -57,17 +59,17 @@ def main():
                     is_ol = True
                     lines.append('<ol>\n')
 
-                lines.append(f'<li>{line}</li>\n')
+                lines.append(f'<li>{handle_bold_italic(line)}</li>\n')
                 continue
 
             # Markdown paragraph
             if line.strip():
                 if is_p:
                     lines.append('<br/>\n')
-                    lines.append(line.strip() + '\n')
+                    lines.append(handle_bold_italic(line.strip()) + '\n')
                 else:
                     lines.append('<p>\n')
-                    lines.append(line.strip() + '\n')
+                    lines.append(handle_bold_italic(line.strip()) + '\n')
                     is_p = True
                 continue
 
@@ -129,6 +131,11 @@ def handle_heading(line):
 
     return line
 
+
+def handle_bold_italic(text):
+    text = re.sub(bold_pattern, r'<b>\1</b>', text)
+    text = re.sub(italic_pattern, r'<em>\1</em>', text)
+    return text
 
 if __name__ == '__main__':
     main()
