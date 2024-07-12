@@ -10,7 +10,7 @@ import re
 # Patterns
 headings_pattern = r'^#{1,6}\s*'
 unordered_pattern = r'^-\s*'
-ordered_pattern = r'^\*\s*'
+ordered_pattern = r'^\*\s+'
 bold_pattern = r'\*\*(.*?)\*\*'
 italic_pattern = r'__(.*?)__'
 
