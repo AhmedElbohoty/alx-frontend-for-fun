@@ -13,7 +13,6 @@ unordered_pattern = r'^-\s*'
 ordered_pattern = r'^\*\s*'
 
 
-
 def main():
     args = sys.argv
 
@@ -22,7 +21,6 @@ def main():
     is_ol = False
     is_p = False
 
-
     if len(args) < 3:
         print('Usage: ./markdown2html.py README.md README.html',
               file=sys.stderr)
@@ -30,8 +28,6 @@ def main():
 
     markdown_path = args[1]
     html_path = args[2]
-
-
 
     if not path.exists(markdown_path):
         print(f"Missing {markdown_path}", file=sys.stderr)
@@ -78,23 +74,22 @@ def main():
             if is_p:
                 lines.append('</p>\n')
                 is_p = False
-            if  is_ul: 
+            if is_ul:
                 lines.append('</ul>\n')
                 is_ul = False
-            if  is_ol: 
+            if is_ol:
                 lines.append('</ol>\n')
                 is_ol = False
 
         if is_p:
             lines.append('</p>\n')
             is_p = False
-        if  is_ul: 
+        if is_ul:
             lines.append('</ul>\n')
             is_ul = False
-        if  is_ol: 
+        if is_ol:
             lines.append('</ol>\n')
             is_ol = False
-
 
     with open(html_path, mode='w') as html:
         html.writelines(lines)
