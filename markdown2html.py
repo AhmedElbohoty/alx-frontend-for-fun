@@ -137,5 +137,6 @@ def handle_bold_italic(text):
     text = re.sub(italic_pattern, r'<em>\1</em>', text)
     return text
 
+
 if __name__ == '__main__':
     main()
