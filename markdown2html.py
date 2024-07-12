@@ -20,6 +20,7 @@ def main():
     lines = []
     is_ul = False
     is_ol = False
+    is_p = False
 
 
     if len(args) < 3:
@@ -63,6 +64,20 @@ def main():
                 lines.append(f'<li>{line}</li>\n')
                 continue
 
+            # Markdown paragraph
+            if line.strip():
+                if is_p:
+                    lines.append('<br/>\n')
+                    lines.append(line.strip() + '\n')
+                else:
+                    lines.append('<p>\n')
+                    lines.append(line.strip() + '\n')
+                    is_p = True
+                continue
+
+            if is_p:
+                lines.append('</p>\n')
+                is_p = False
             if  is_ul: 
                 lines.append('</ul>\n')
                 is_ul = False
@@ -70,6 +85,9 @@ def main():
                 lines.append('</ol>\n')
                 is_ol = False
 
+        if is_p:
+            lines.append('</p>\n')
+            is_p = False
         if  is_ul: 
             lines.append('</ul>\n')
             is_ul = False
