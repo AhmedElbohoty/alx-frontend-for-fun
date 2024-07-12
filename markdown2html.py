@@ -89,20 +89,28 @@ def handle_unordered_list(line):
     Parsing Unordered listing syntax for generating HTML
     '''
     line = re.sub(unordered_pattern, '', line)
-    # If this the first list item, create ul tag
-    last_tag = lines[-1]
-
-    if not last_tag.startswith('<ul>') and not last_tag.startswith('<li>'):
-        lines.append('<ul>\n')
+    
+    open_unordered_list()
 
     return f'<li>{line}</li>\n'
+
+
+def open_unordered_list():
+    if len(lines) == 0:
+        lines.append('<ul>\n')
+        return
+
+    last_tag = lines[-1]
+    if not last_tag.startswith('<ul>') and not last_tag.startswith('<li>'):
+        lines.append('<ul>\n')
 
 
 def close_unordered_list():
     if len(lines) == 0: 
         return
 
-    if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
+    last_tag = lines[-1]
+    if last_tag.startswith('<ul>') or last_tag.startswith('<li>'):
         lines.append('</ul>\n')
 
 
