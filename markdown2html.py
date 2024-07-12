@@ -41,11 +41,9 @@ def main():
                 lines.append(handle_unordered_list(line.strip()))
                 continue
 
-            if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
-                lines.append('</ul>\n')
+            close_unordered_list()
 
-        if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
-            lines.append('</ul>\n')
+        close_unordered_list()
 
     with open(html_path, mode='w') as html:
         html.writelines(lines)
@@ -98,6 +96,14 @@ def handle_unordered_list(line):
         lines.append('<ul>\n')
 
     return f'<li>{line}</li>\n'
+
+
+def close_unordered_list():
+    if len(lines) == 0: 
+        return
+
+    if lines[-1].startswith('<ul>') or lines[-1].startswith('<li>'):
+        lines.append('</ul>\n')
 
 
 if __name__ == '__main__':
