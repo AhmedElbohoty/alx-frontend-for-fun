@@ -5,6 +5,7 @@ Script to render markdown in html
 import sys
 from os import path
 import re
+import hashlib
 
 
 # Patterns
@@ -13,6 +14,8 @@ unordered_pattern = r'^-\s*'
 ordered_pattern = r'^\*\s+'
 bold_pattern = r'\*\*(.*?)\*\*'
 italic_pattern = r'__(.*?)__'
+md5_pattern = r'\[\[(.*?)\]\]'
+c_pattern = r'\(\((.*?)\)\)'
 
 
 def main():
@@ -135,8 +138,16 @@ def handle_heading(line):
 def handle_bold_italic(text):
     text = re.sub(bold_pattern, r'<b>\1</b>', text)
     text = re.sub(italic_pattern, r'<em>\1</em>', text)
+    text = re.sub(md5_pattern,
+                  lambda m: hashlib.md5(m.group(1).encode()).hexdigest(),
+                  text)
+    text = re.sub(c_pattern,
+                  remove_all_c,
+                  text)
     return text
 
+def remove_all_c(text):
+    return re.sub(r'(?i)c', '', text.group(1))
 
 if __name__ == '__main__':
     main()
