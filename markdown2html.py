@@ -42,7 +42,8 @@ def main():
         for line in markdown:
             # Markdown Headings
             if re.match(headings_pattern, line):
-                lines.append(handle_heading(line.strip()))
+                line = handle_special_cases(line.strip())
+                lines.append(handle_heading(line))
                 continue
 
             # Markdown Unordered List
@@ -52,7 +53,7 @@ def main():
                     is_ul = True
                     lines.append('<ul>\n')
 
-                lines.append(f'<li>{handle_bold_italic(line)}</li>\n')
+                lines.append(f'<li>{handle_special_cases(line)}</li>\n')
                 continue
 
             # Markdown Ordered List
@@ -62,17 +63,17 @@ def main():
                     is_ol = True
                     lines.append('<ol>\n')
 
-                lines.append(f'<li>{handle_bold_italic(line)}</li>\n')
+                lines.append(f'<li>{handle_special_cases(line)}</li>\n')
                 continue
 
             # Markdown paragraph
             if line.strip():
                 if is_p:
                     lines.append('<br/>\n')
-                    lines.append(handle_bold_italic(line.strip()) + '\n')
+                    lines.append(handle_special_cases(line.strip()) + '\n')
                 else:
                     lines.append('<p>\n')
-                    lines.append(handle_bold_italic(line.strip()) + '\n')
+                    lines.append(handle_special_cases(line.strip()) + '\n')
                     is_p = True
                 continue
 
@@ -135,7 +136,10 @@ def handle_heading(line):
     return line
 
 
-def handle_bold_italic(text):
+def handle_special_cases(text):
+    '''
+    Handle all special cases
+    '''
     text = re.sub(bold_pattern, r'<b>\1</b>', text)
     text = re.sub(italic_pattern, r'<em>\1</em>', text)
     text = re.sub(md5_pattern,
@@ -146,8 +150,13 @@ def handle_bold_italic(text):
                   text)
     return text
 
+
 def remove_all_c(text):
+    '''
+    Handle Removing all c from texts
+    '''
     return re.sub(r'(?i)c', '', text.group(1))
+
 
 if __name__ == '__main__':
     main()
