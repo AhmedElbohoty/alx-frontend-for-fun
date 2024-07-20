@@ -6,6 +6,7 @@
 }
 
 .box {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,6 +15,7 @@
 
 .box1,
 .box5 {
+  top: 16px;
   width: 80px;
   height: 48px;
   font-size: 16px;
@@ -30,6 +32,7 @@
 
 .box2,
 .box4 {
+  top: 8px;
   width: 120px;
   height: 80px;
   font-size: 2rem;
