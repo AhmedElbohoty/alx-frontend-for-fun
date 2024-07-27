@@ -505,7 +505,7 @@ ul.row {
 }
 
 .hero-homepage {
-  background-image: url(images/banner-home.jpg);
+  background-image: url(./images/banner-home.jpg);
   background-position: 75% 0;
   background-repeat: no-repeat;
   background-size: 90rem auto;
@@ -799,15 +799,6 @@ ul.row {
   content: "";
 }
 
-/* Basic form
-    ============================= */
-form {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 1rem 0;
-}
-
 /*** FORM ***/
 /* Comment section
     ============================= */
@@ -819,4 +810,13 @@ form {
 
 .post-comments .section-title {
   font-variant: small-caps;
+}
+
+/* Basic form
+    ============================= */
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 1rem 0;
 }
