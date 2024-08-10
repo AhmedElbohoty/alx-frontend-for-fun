@@ -1,0 +1,106 @@
+:root {
+  --border-color: #c3c3c3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* #region checkbox */
+.menu-open {
+  display: none;
+  position: absolute;
+  opacity: 0;
+}
+
+.menu-open-button {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  border-radius: 50%;
+  border: #c3c3c3 solid 1.5px;
+  background-color: #e0013c;
+  transition: scale ease-in-out 400ms;
+  cursor: pointer;
+}
+
+.menu-open-button:hover {
+  scale: 1.1;
+}
+
+.menu-line {
+  height: 2px;
+  width: 20px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  transition: translate ease-in-out 400ms, opacity ease-in-out 400ms,
+    rotate ease-in-out 400ms;
+}
+
+.menu-open:checked ~ .menu-open-button .menu-line-1 {
+  rotate: -45deg;
+  translate: 0 6px;
+}
+
+.menu-open:checked ~ .menu-open-button .menu-line-2 {
+  opacity: 0;
+}
+
+.menu-open:checked ~ .menu-open-button .menu-line-3 {
+  rotate: 45deg;
+  translate: 0 -6px;
+}
+/* #endregion checkbox */
+
+/* #region item */
+.menu-item {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background-color: #e0013c;
+  border: #c3c3c3 solid 1.5px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: background-color ease-in-out 400ms, color ease-in-out 400ms,
+    opacity ease-in-out 400ms;
+}
+
+.menu-item:hover {
+  color: #e0013c;
+  background-color: #ffffff;
+}
+
+.menu-open:checked ~ .menu-item {
+  opacity: 1;
+}
+/* #endregion item */
