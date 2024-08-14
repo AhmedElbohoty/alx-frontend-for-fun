@@ -1,39 +1,32 @@
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+h2 {
+  margin: 10px 5px;
+  position: relative;
 }
 
 a {
-  position: relative;
-  color: #86183b;
   text-decoration: none;
+  color: #8a153a;
 }
 
 a::before {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   content: "";
-  display: block;
-  width: 0;
-  height: 2px;
-  background-color: #86183b;
-  transition: width 400ms ease-in-out;
+  position: absolute;
+  text-decoration: none;
+  background-color: #8a153a;
+  height: 3px;
+  transform: translateY(2.2ex);
+  transition: 0.5s ease-out;
+  transform-origin: left;
 }
 
 a:hover::before {
-  width: 100%;
+  width: 9.5ch;
 }
